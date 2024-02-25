@@ -2,9 +2,12 @@ import './App.css';
 import { useFormik } from "formik";
 import { userSchema } from './validation/userSchema';
 
+let submittedForm = false;
+
 const onSubmit = async (values, actions) => {
   console.log("submitted")
   await new Promise((resolve) => setTimeout(resolve, 1000));
+  submittedForm = true;
   actions.resetForm()
 }
 
@@ -21,7 +24,6 @@ function App() {
     onSubmit,
   })
 
-  console.log(formik.errors)
 
   return (
     <div className='main'>
@@ -77,7 +79,8 @@ function App() {
         
         <div className='btn-submit'>
           <input type="submit" value="Claim your free trial" disabled={formik.isSubmitting}/>
-          <p>By clicking the button, you are agreeing to our <span>Terms and Services</span></p>
+          {!(submittedForm) && <p className='terms'>By clicking the button, you are agreeing to our <span>Terms and Services</span></p>}
+          {submittedForm && <p className='success'>Thanks for submitting!</p>}
         </div>
         
       </form>
